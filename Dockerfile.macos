@@ -2,6 +2,13 @@ FROM ubuntu:22.04
 
 ARG TARGETARCH
 
+# Sane terminal + locale defaults (overridden at runtime by claude-sandbox.sh
+# forwarding the host's TERM/LANG). C.UTF-8 is built into glibc — no locale-gen
+# needed. Ensures OSC 8 hyperlinks render and UTF-8 box-drawing works.
+ENV TERM=xterm-256color \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
+
 # Install user-defined packages from packages.txt
 COPY packages.txt /tmp/packages.txt
 RUN apt-get update \
